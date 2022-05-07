@@ -31,6 +31,7 @@ public class FirstFragment extends Fragment {
 
     ListView listViewForJSON;
 
+    //Initializing listViewForJSON and hashMapForJSON when view created
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
@@ -84,13 +85,13 @@ public class FirstFragment extends Fragment {
                     //Close the scanner
                     scanner.close();
 
+                    //Made JSON object for parsing
                     JSONObject data_obj = new JSONObject(inline);
 
                     //Get the required object from the above created object
                     JSONArray arr =  data_obj.getJSONArray("items");
 
                     //Get the required data using its key
-
                     for (int i = 0; i < arr.length(); i++) {
                         JSONObject obj = arr.getJSONObject(i);
                         String nameOfItem = obj.getString("name");
@@ -104,6 +105,7 @@ public class FirstFragment extends Fragment {
                         tempHashMap.put("size", sizeOfItem);
                         tempHashMap.put("has_wiki", has_wiki);
 
+                        //Putting JSON data in hashMapForJSON
                         hashMapForJSON.add(tempHashMap);
                     }
                 }
@@ -116,6 +118,7 @@ public class FirstFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
 
+            //Setting up MySimpleArrayAdapter
             MySimpleArrayAdapter adapter = new MySimpleArrayAdapter(
                     getActivity(),
                     hashMapForJSON,
@@ -137,9 +140,12 @@ public class FirstFragment extends Fragment {
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
+
                 LayoutInflater inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View rowView = inflater.inflate(R.layout.row_layout, parent, false);
+
+                //Getting the position and values of items in row in row_layout
                 TextView textViewName = (TextView) rowView.findViewById(R.id.textView);
                 TextView textViewLoginName = (TextView) rowView.findViewById(R.id.textView2);
                 TextView textViewSize = (TextView) rowView.findViewById(R.id.textView3);
@@ -149,8 +155,9 @@ public class FirstFragment extends Fragment {
                 textViewSize.setText(values.get(position).get("size").toString());
                 textViewHasWiki.setText(values.get(position).get("has_wiki").toString());
 
+                //Changing the values of Row in row_layout
                 if(textViewHasWiki.getText().equals("true")) {
-                    rowView.setBackgroundColor(Color.GREEN);
+                    rowView.setBackgroundColor(Color.parseColor("#8CE9F0"));
                 }
 
                 return rowView;
